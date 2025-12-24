@@ -1,18 +1,25 @@
-
-const getStudents = (req,res) => {
-    const mydata = {name: "Prathap",age: "24", Branch: "ECE"};
+import Student from "../Models/studentsModels.js";
+const getStudents = (req, res) => {
+    const mydata = { name: "Prathap", age: "24", Branch: "ECE" };
     res.send(mydata);
 };
 
-const addStudentdata = (req,res)=>{
-    const data=req.body;
-    console.log(data);
-    res.send({
-        message: "Data has been added successfully"
-    });
+const addStudentdata = async (req, res) => {
+    try {
+        const data = req.body;
+        console.log(data);
+
+        const addeddata = await Student.create(data);
+        // const addeddata = await student.insertMany([data]);
+        console.log(addeddata);
+        res.status(200).json("added data");
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 }
 
-export {getStudents, addStudentdata};
+export { getStudents, addStudentdata };
 
 /*
 const getStudentsDetils = (req,res) =>{

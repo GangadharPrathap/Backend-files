@@ -22,7 +22,7 @@ const addStudentdatas = (req,res)=>{
     const mydata=req.body;
     console.log(mydata);
     res.status(201).json(mydata);
-}   
+}
 
 const putstudentsdata = (req,res)=>{
     const mydata=req.body;

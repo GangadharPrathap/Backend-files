@@ -1,11 +1,11 @@
 import express from 'express';
 
 const router = express.Router();
-import { getStudentsdata, addStudentdatas,putstudentsdata } from '../src/statusCode.js';
+import { getStudents, addStudentdata  } from "../Controllers/studentsControllers.js";
 
 
-router.put('/update-students',putstudentsdata);
-router.get('/get-students', getStudentsdata);
-router.post('/add-students', addStudentdatas);
+// router.put('/update-students',putstudentsdata);
+router.get('/get-students', getStudents);
+router.post('/add-students', addStudentdata);
 
 export default router;
