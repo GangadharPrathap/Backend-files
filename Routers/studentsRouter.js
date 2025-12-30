@@ -1,11 +1,13 @@
+
 import express from 'express';
-
 const router = express.Router();
-import { getStudents, addStudentdata  } from "../Controllers/studentsControllers.js";
+import {getStudentsDetails,addStudents,getStudentById,getStudentsDetailsWithFilters,updateStudents,UpdateStudentsStatus} from '../Controllers/studentsControllers.js';
 
-
-// router.put('/update-students',putstudentsdata);
-router.get('/get-students', getStudents);
-router.post('/add-students', addStudentdata);
+router.get('/get-students', getStudentsDetails);
+router.post('/add-students', addStudents);
+router.get('/get-student-byid/:userid', getStudentById);//params single
+router.get('/get-std-details-withfilter', getStudentsDetailsWithFilters);//query parameters
+router.put('/put-students/:id', updateStudents);//put method
+router.put('/update-students-status', UpdateStudentsStatus);//put method to update multiple documents
 
 export default router;

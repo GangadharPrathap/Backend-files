@@ -9,7 +9,9 @@ const studentSchema = new mongoose.Schema({
     },
     stdPhone: {
         type : Number
-    }
+    },
+    status: {
+        type: Boolean  }
 });
 const student = mongoose.model("student", studentSchema);
 export default student;
