@@ -70,6 +70,36 @@ const UpdateStudentsStatus = async (req, res) => {
     }
 }
 
+const deleteStudentById = async (req, res) => {
+    try{
+        const id = req.params.userid;
+        const deletedData = await student.findOneAndDelete({stdRoll: id});
+        res.status(200).json(deletedData);
+
+    }catch(error){
+        res.status(500).json({error: error.message})}
+}
+
+const deleteStudentById2 = async(req,res) => {
+    try{
+        const id =req.params.userid;
+        const deletedDatas = await student.findByIdAndDelete(id);
+        res.status(200).json(deletedDatas);
+    }
+    catch(error){
+        res.status(500).json({error: error.message})
+    }
+}
+
+const deleteStudentMany = async(req,res)=>{
+    try{
+        const deletedDats = await student.deleteMany({status:true});
+        res.status(200).json(deletedDats);
+    }catch(error){
+        res.status(500).json({error:error.message})
+    }
+}
+
 // This is for testing 👀⁉️
 const getStudentsDetailsWithFilters = async(req, res) => {
     try{
@@ -83,4 +113,4 @@ const getStudentsDetailsWithFilters = async(req, res) => {
     }
 
 }
-export {getStudentsDetails, addStudents, getStudentById, getStudentsDetailsWithFilters, updateStudents , UpdateStudentsStatus};
+export {getStudentsDetails, addStudents, getStudentById, getStudentsDetailsWithFilters, updateStudents , UpdateStudentsStatus, deleteStudentById, deleteStudentById2, deleteStudentMany};

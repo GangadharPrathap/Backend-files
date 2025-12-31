@@ -11,7 +11,8 @@ const studentSchema = new mongoose.Schema({
         type : Number
     },
     status: {
-        type: Boolean  }
+        type: Boolean
+    }
 });
 const student = mongoose.model("student", studentSchema);
 export default student;
