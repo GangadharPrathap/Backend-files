@@ -7,7 +7,7 @@ import studentRouter from '../Routers/studentsRouter.js';
 const app = express();
 app.use(express.json());
 app.use(cors());
-
+/////////
 mongoose.connect("mongodb+srv://gangadharprathap0606_db_user:1k9uut221pa@cluster0.hfbawmq.mongodb.net/").then(() => console.log("db connected"))
 .catch((error) => console.log(error));
 
