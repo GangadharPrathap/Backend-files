@@ -1,7 +1,16 @@
 
 import express from 'express';
 const router = express.Router();
-import {getStudentsDetails,addStudents,getStudentById,getStudentsDetailsWithFilters,updateStudents,UpdateStudentsStatus,deleteStudentById,deleteStudentById2,deleteStudentMany} from '../Controllers/studentsControllers.js';
+import {
+    getStudentsDetails,
+    addStudents,
+    getStudentById,
+    getStudentsDetailsWithFilters,
+    updateStudents,
+    UpdateStudentsStatus,
+    deleteStudentById,
+    deleteStudentById2,
+    deleteStudentMany} from '../Controllers/studentsControllers.js';
 
 router.get('/get-students', getStudentsDetails);
 router.post('/add-students', addStudents);
@@ -13,5 +22,17 @@ router.delete('/delete-student-byid/:userid', deleteStudentById);//delete method
 router.delete('/delete-student-byid2/:userid', deleteStudentById2);//delete method using findByIdAndDelete
 router.delete('/delete-student-many', deleteStudentMany);//delete method to delete multiple documents
 
+route.get('/send-mail',
+    async(req,res,next)=>{
+        try{
+            const decoded = JWT.verify(req.cookies.token,"!@#CCAfdv678678")
+            console.log(decoded)
+            next();
+        }
+        catch(err){
+            return res.status(400).json("Token Expired")
+        }
+    },
+FirstController.SendMail);
 
 export default router;
