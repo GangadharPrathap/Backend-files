@@ -1,38 +1,17 @@
-
-import express from 'express';
+const express = require("express");
 const router = express.Router();
-import {
-    getStudentsDetails,
-    addStudents,
-    getStudentById,
-    getStudentsDetailsWithFilters,
-    updateStudents,
-    UpdateStudentsStatus,
-    deleteStudentById,
-    deleteStudentById2,
-    deleteStudentMany} from '../Controllers/studentsControllers.js';
+const studentcontroller = require("../Controllers/studentsControllers");
 
-router.get('/get-students', getStudentsDetails);
-router.post('/add-students', addStudents);
-router.get('/get-student-byid/:userid', getStudentById);//params single
-router.get('/get-std-details-withfilter', getStudentsDetailsWithFilters);//query parameters
-router.put('/put-students/:id', updateStudents);//put method
-router.put('/update-students-status', UpdateStudentsStatus);//put method to update multiple documents
-router.delete('/delete-student-byid/:userid', deleteStudentById);//delete method
-router.delete('/delete-student-byid2/:userid', deleteStudentById2);//delete method using findByIdAndDelete
-router.delete('/delete-student-many', deleteStudentMany);//delete method to delete multiple documents
+router.get("/get-students", studentcontroller.getStudentsDetails);
+router.post("/add-students", studentcontroller.addStudents);
+router.get("/get-student-byid/:userid", studentcontroller.getStudentById);
+router.get("/get-std-details-withfilter", studentcontroller.getStudentsDetailsWithFilters);
+router.put("/put-students/:id", studentcontroller.updateStudents);
+router.put("/update-students-status", studentcontroller.UpdateStudentsStatus);
+router.delete("/delete-student-byid/:userid", studentcontroller.deleteStudentById);
+router.delete("/delete-student-byid2/:userid", studentcontroller.deleteStudentById2);
+router.delete("/delete-student-many", studentcontroller.deleteStudentMany);
+router.post("/encrypt-token", studentcontroller.Encryption);
+router.post("/verify-token", studentcontroller.Verifyencrypt);
 
-route.get('/send-mail',
-    async(req,res,next)=>{
-        try{
-            const decoded = JWT.verify(req.cookies.token,"!@#CCAfdv678678")
-            console.log(decoded)
-            next();
-        }
-        catch(err){
-            return res.status(400).json("Token Expired")
-        }
-    },
-FirstController.SendMail);
-
-export default router;
+module.exports=router;

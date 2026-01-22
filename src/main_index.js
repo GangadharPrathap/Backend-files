@@ -1,11 +1,11 @@
 
-import express from 'express';
-import cors from 'cors';
-import mongoose from 'mongoose';
-import studentRouter from '../Routers/studentsRouter.js';
-const Cookieparser = require('cookie-parser')
+const express = require('express')
+const cors = require('cors')
+const mongoose = require('mongoose')
+const studentRouter = require('../Routers/studentsRouter')
+// const Cookieparser = require('cookie-parser')
 const app = express();
-app.use(Cookieparser())
+// app.use(Cookieparser())
 app.use(express.json());
 app.use(cors());
 

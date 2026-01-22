@@ -1,48 +1,45 @@
-import student from "../Models/studentsModels.js";
+const student = require("../Models/studentsModels");
+const bcrypt = require("bcrypt");
 
-const JWT = require('jsonwebtoken')
-const getStudentsDetails = async(req, res) => {
-    try{
+/* GET ALL STUDENTS */
+const getStudentsDetails = async (req, res) => {
+    try {
         const mydata = await student.find();
         res.status(200).json(mydata);
-    }catch(error){
-        console.log(error);
-        res.status(500).json({error: error.message})
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
+};
 
-};
-const addStudents = async(req, res) => {
-    try{
-         const data = req.body;
-    console.log(data);
-    // const addeddata = await student.create(data);
-    const addeddata = await student.insertMany(data);
-    console.log(addeddata);
-    res.status(201).json("data added");
-    }catch(error){
-        res.status(500).json({error: error.message})
+/* ADD STUDENTS */
+const addStudents = async (req, res) => {
+    try {
+        const data = req.body;
+        await student.insertMany(data);
+        res.status(201).json("data added");
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 };
+
+/* GET STUDENT BY ID (_id) */
 const getStudentById = async (req, res) => {
-    try{
+    try {
         const id = req.params.userid;
-        console.log("id :", id)
-        const data = await student.findById({_id: id});
-        console.log(data);
+        const data = await student.findById(id);
         res.status(200).json(data);
-    }catch(error){
-        res.status(500).json({error: error.message})
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 };
 
+/* UPDATE STUDENT BY ROLL */
 const updateStudents = async (req, res) => {
     try {
         const { id } = req.params;
-        const data = req.body;
-
         const updatedData = await student.findOneAndUpdate(
             { stdRoll: id },
-            data,
+            req.body,
             { new: true }
         );
 
@@ -59,84 +56,93 @@ const updateStudents = async (req, res) => {
     }
 };
 
+/* UPDATE MULTIPLE STUDENTS */
 const UpdateStudentsStatus = async (req, res) => {
     try {
         await student.updateMany(
             { status: false },
-            { $set: {status:true} }
+            { $set: { status: true } }
         );
-        res.status(200).json({ message: "All inactive students have been updated to active." });
-    }catch (error) {
+        res.status(200).json({ message: "All inactive students updated" });
+    } catch (error) {
         res.status(500).json({ message: error.message });
     }
-}
+};
 
+/* DELETE BY ROLL */
 const deleteStudentById = async (req, res) => {
-    try{
+    try {
         const id = req.params.userid;
-        const deletedData = await student.findOneAndDelete({stdRoll: id});
+        const deletedData = await student.findOneAndDelete({ stdRoll: id });
         res.status(200).json(deletedData);
-
-    }catch(error){
-        res.status(500).json({error: error.message})}
-}
-
-const deleteStudentById2 = async(req,res) => {
-    try{
-        const id =req.params.userid;
-        const deletedDatas = await student.findByIdAndDelete(id);
-        res.status(200).json(deletedDatas);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
-    catch(error){
-        res.status(500).json({error: error.message})
-    }
-}
+};
 
-const deleteStudentMany = async(req,res)=>{
-    try{
-        const deletedDats = await student.deleteMany({status:true});
-        res.status(200).json(deletedDats);
-    }catch(error){
-        res.status(500).json({error:error.message})
+/* DELETE BY _id */
+const deleteStudentById2 = async (req, res) => {
+    try {
+        const id = req.params.userid;
+        const deletedData = await student.findByIdAndDelete(id);
+        res.status(200).json(deletedData);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
-}
+};
 
-// This is for testing 👀⁉️
-const getStudentsDetailsWithFilters = async(req, res) => {
-    try{
-        const {stdBranch, stdCollege, stdCgpa} = req.query;
-        console.log("stdBranch :", stdBranch);
-        console.log("stdCollege :", stdCollege);
-        console.log("stdCgpa :", stdCgpa);
-        res.status(200).json("success");
-    }catch(error){
-        res.status(500).json({error: error.message})
+/* DELETE MANY */
+const deleteStudentMany = async (req, res) => {
+    try {
+        const result = await student.deleteMany({ status: true });
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
+};
 
-}
-const GenerateToken = async(req,res)=>{
-    try{
-        const JWTtoken = JWT.sign(
-            {
-                "user_id":"11223344"
-            },
-            "!@#CCAfdv678678",
-            {
-              expiresIn:'10s'
-            }
-        )
-        res.cookie("token",JWTtoken,{
-            httpOnly:true,
-            secure:false,
-            sameSite:'lax',
-            maxAge:10*1000
-        })
-        return res.status(200).json(JWTtoken)
+/* FILTER (PLACEHOLDER) */
+const getStudentsDetailsWithFilters = async (req, res) => {
+    try {
+        const { stdBranch, stdCollege, stdCgpa } = req.query;
+        res.status(200).json({ stdBranch, stdCollege, stdCgpa });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
-    catch(err){
-        console.log(err)
-        return res.status(500).json(err)
-    }
-}
+};
 
-export {getStudentsDetails, GenerateToken, addStudents, getStudentById, getStudentsDetailsWithFilters, updateStudents , UpdateStudentsStatus, deleteStudentById, deleteStudentById2, deleteStudentMany,};
+/* BCRYPT ENCRYPT */
+const Encryption = async (req, res) => {
+    try {
+        const hash = await bcrypt.hash(req.body.password, 10);
+        res.status(200).json(hash);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+};
+
+/* BCRYPT VERIFY (FIXED LOGIC REQUIRED IN REAL APPS) */
+const Verifyencrypt = async (req, res) => {
+    try {
+        const hashedPassword ="$2b$10$5K4fndokQ.vYF4LorwDn8uMdWsdaBIHyaNa.WH1b.1Qsi0vSbo53m"; // expect hash from client/db
+        const result = await bcrypt.compare(req.body.password, hashedPassword);
+        res.status(200).json(result);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+};
+
+/* EXPORTS */
+module.exports = {
+    getStudentsDetails,
+    addStudents,
+    getStudentById,
+    getStudentsDetailsWithFilters,
+    updateStudents,
+    UpdateStudentsStatus,
+    deleteStudentById,
+    deleteStudentById2,
+    deleteStudentMany,
+    Encryption,
+    Verifyencrypt
+};
