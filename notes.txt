@@ -1,0 +1,2 @@
+installed necessary extensions and source files for the mobile application development 
+installed EXPO and then installed android studio still need to install the specified phone data
